@@ -11,7 +11,7 @@
 \begin{document}
 \maketitle
 
-\section{előadás}
+\section{Előadás}
 
 \subsection{Digitális számítógép. Strukturált számítógép-felépítés. Nyelvek, szintek, virtuális gépek. Korszerű többszintű számítógépek.}
 
@@ -141,7 +141,7 @@ Példák komplex utasításokra:
 
 A mikroprogramok a komplex utasítások elburjánzása miatt nagyok, lassúak lettek. Az utasításkészlet drasztikus csökkentésével és a megmaradó utasítások közvetlen végrehajtásával jelentős teljesítményjavulást lehetett elérni.
 
-\section{előadás}
+\section{Előadás}
 
 \subsection{A Neumann-elvű gép főbb részei. Központi memória: felépítése, felosztása, mérete.}
 
@@ -287,5 +287,29 @@ Az Intel processzorok eleinte CISC architektúrájúak voltak, később ebbe (a 
 	\item \emph{Csak a betöltő és a tároló utasítások hivatkozzanak a memóriára.} Törekedni kell a párhuzamos utasításkiadásra.
 	\item \emph{Sok regiszter legyen.} A számítások során ne kelljen a lassú memóriába írni.
 \end{itemize}
+
+\section{Előadás}
+
+\subsection{Számrendszerek, átváltások, egész számok ábrázolása, bináris aritmetika.}
+
+\subsubsection{Számrendszerek}
+
+A tízes számrendszerbeli számok számjegyei mindig a tíz valamely hatványának többszörösét jelentik. Általánosan így írhatunk fel egy tízes számrendszerbeli helyiértékes számot:
+
+$$N = 10^{n} d_n + \dots + 10^3 d_3 + 10^2 d_2 + 10^1 d_1 + 10^0 d_0 + 10^{-1} d_{-1} + 10^{-2} d_{-2} + \dots + 10^{-k} d_{-k}$$
+
+$$N = \sum_{i=-k}^{n} 10^i d_i\quad0 \leq d < 10$$
+
+$N$ itt a szám értékét, $d_{-k} \dots d_n$ a számjegyeket jelenti. A helyiértékes számírás alapszáma a 10-től eltérő is lehet. Ha az alapszámot $b$-nek nevezzük, a számérték:
+
+$$N = \sum_{i=-k}^{n} b^i d_i\quad0 \leq d < b$$
+
+A tízesen kívül az informatikában fontos számrendszer a \emph{kettes (bináris)}, a \emph{nyolcas (oktális)} és a \emph{tizenhatos (hexadecimális)}. A kettes számrendszer számjegyei megfeleltethetők a biteknek, ezért a digitális számítógép binárisan számol. Egy oktális számjegy 3, egy hexadecimális 4 bináris számjegynek felel meg, ezért ezek között nagyon egyszerű az átalakítás. A 9-nél nagyobb hexadecimális számjegyeket növekvő sorrendben az A-F betűkkel jelöljük.
+
+\subsubsection{Átváltások számrendszerek között}
+
+\subsection{Lebegőpontos számok ábrázolása.}
+
+\subsection{Szöveg kódolása. Bájtsorrend. Hibadetektáló és -javító kódok.}
 
 \end{document}
