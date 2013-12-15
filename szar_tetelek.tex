@@ -155,7 +155,17 @@ Ezen kívül egyéb, a \emph{működést segítő eszközök} tartoznak a szám�
 
 \subsubsection{Központi memória}
 
-A tárolás alapegysége a \emph{bit}, mely 0 vagy 1 értéket vehet fel. Ezt elektronikusan az áram jelenlétével vagy hiányával ábrázolják.
+\paragraph{Felépítése} A tárolás alapegysége a \emph{bit}, mely 0 vagy 1 értéket vehet fel. Ezt elektronikusan az áram jelenlétével vagy hiányával ábrázolják. Legkisebb címezhető egysége a \emph{rekesz (cella)}, mely egymást követő biteket tartalmaz. Egy rekesz leggyakrabban 8 bites (\emph{bájt}), de korábban ettől eltérő csoportosítással is lehetett találkozni.
+
+A memóriarekeszek tartalmát címük alapján érhetjük el. Egyes gépeken a memóriát egydimenziós tömbnek tekinthetjük, melynek indexei a memóriacímek. Máshol a kis címhossz miatt szegmensekre osztják a memóriát, és a szegmens és egy ennek kezdőpontjához képesti eltolás megadásával címezhetünk meg egy rekeszt (\emph{szegmens:offszet címzés}). Ezeken kívül számos egyéb címzési mód létezik.
+
+A számítógép egy regiszterébe beférő bájtokat \emph{szónak} nevezzük. A szó tehát 32-bites rendszeren 4, 64-bitesen 8 bájtot jelent. Sok gépi kódú utasítás teljes szavakkal dolgozik.A memóriában általában tetszőleges bájtot megcímezhetünk, de a szóhatáron kezdődő címek elérése gyorsabb. A fordítóprogramok általában képesek szóhatárra igazítani az adatokat.
+
+A rekeszek adatokat (pl. egész, lebegőpontos, BCD szám, karakterkód, stb.) vagy gépi kódot tartalmazhatnak. A gépi kódú utasítások és ezek operandusai is számok.
+
+\paragraph{Felosztása} A memória nagy részét a programok szabadon használhatják, bizonyos címterületek azonban a hardverrel való kapcsolattartásra vannak fenntartva. Bizonyos címek meghatározhatják egyes címterületek tartalmát (pl. RAM vagy ROM legyen ott elérhető).
+
+\paragraph{Mérete} Korábban pár kilobájtos, megabájtos volt, ma több gigabájt az általános.
 
 \subsection{Utasítás-végrehajtás. Utasítás- és processzorszintű párhuzamosság. RISC és CISC. Korszerű számítógépek tervezési elvei.}
 
