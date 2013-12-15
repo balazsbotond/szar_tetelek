@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
 \usepackage{t1enc}
 \usepackage[magyar]{babel}
 \usepackage[utf8]{inputenc}
@@ -147,7 +147,11 @@ A mikroprogramok a komplex utasítások elburjánzása miatt nagyok, lassúak le
 
 \subsubsection{A Neumann-elvű gép főbb részei}
 
-\includegraphics[width=\textwidth]{neumann}
+\begin{figure}[h]
+	\caption{A Neumann-elvű gép sematikus rajza}
+	\label{fig:neumann}
+	\includegraphics[width=\textwidth]{neumann}
+\end{figure}
 
 A \emph{központi memória} a program kódját és adatait tartalmazza számokként tárolva. A \emph{központi feldolgozóegység} a központi memóriában tárolt program utasításait olvassa be és hajtja végre. A \emph{külső sín} a számítógép részegységeit köti össze; adatokat, címeket és vezérlőjeleket továbbít. A \emph{belső sín} a CPU részei közötti kommunikációt teszi lehetővé. A \emph{bemeneti-kimeneti eszközök} segítségével valósul meg a kapcsolat a felhasználóval és az adattárolás (háttértárolón).
 
@@ -169,12 +173,119 @@ A rekeszek adatokat (pl. egész, lebegőpontos, BCD szám, karakterkód, stb.) v
 
 \subsection{Utasítás-végrehajtás. Utasítás- és processzorszintű párhuzamosság. RISC és CISC. Korszerű számítógépek tervezési elvei.}
 
-% A \emph{CPU} (Central Processing Unit, Központi Feldolgozóegység) feladata a központi memóriában tárolt programok végrehajtása. Ez az utasítások beolvasását, vizsgálatát, majd egyenkénti elvégzését jelenti.
+\subsubsection{Processzorok}
 
-% A számítógép komponenseit \emph{sín} (bus) köti össze, ez cím-, adat- és vezérlőjeleket továbbító párhuzamos vezetékek kötege.
+A \emph{CPU} (Central Processing Unit, Központi Feldolgozóegység) feladata a központi memóriában tárolt programok végrehajtása. Ez az utasítások beolvasását, vizsgálatát, majd egyenkénti elvégzését jelenti.
 
-% A CPU több önálló részegységből áll. A \emph{vezérlőegység} (Control Unit, CU) beolvassa az utasításokat a központi memóriából, és eldönti, hogy milyen típusúak. Az \emph{aritmetikai-logikai egység} (Arithmetic Logic Unit, ALU) az utasítások végrehajtásához szükséges matematikai és logikai műveleteket végzi el.
+A számítógép komponenseit \emph{sín} (bus) köti össze, ez cím-, adat- és vezérlőjeleket továbbító párhuzamos vezetékek kötege.
 
-% A CPU-ban kis méretű, nagy sebességű memóriarekeszek, regiszterek is vannak, midegyiknek meghatározott mérete és funkciója van. Általában minden regiszter azonos méretű. A legfontosabb regiszter a \emph{programszámláló} (Program Counter, PC), amely a következő végrehajtandó utasítás memóriacímét tartalmazza. Az \emph{utasításregiszterben} (Instruction Register, IR) pedig az épp végrehajtott utasítást találjuk.
+A CPU több önálló részegységből áll. A \emph{vezérlőegység} (Control Unit, CU) beolvassa az utasításokat a központi memóriából, és eldönti, hogy milyen típusúak. Az \emph{aritmetikai-logikai egység} (Arithmetic Logic Unit, ALU) az utasítások végrehajtásához szükséges matematikai és logikai műveleteket végzi el.
+
+A CPU-ban kis méretű, nagy sebességű memóriarekeszek, regiszterek is vannak, midegyiknek meghatározott mérete és funkciója van. Általában minden regiszter azonos méretű. A legfontosabb regiszter a \emph{programszámláló} (Program Counter, PC), amely a következő végrehajtandó utasítás memóriacímét tartalmazza. Az \emph{utasításregiszterben} (Instruction Register, IR) pedig az épp végrehajtott utasítást találjuk.
+
+\subsubsection{Utasítás-végrehajtás}
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=10cm]{adatut}
+	\caption{Adatút\label{fig:adatut}}	
+\end{figure}
+
+A~\ref{fig:adatut}. ábra az utasítás-végrehajtás úgynevezett \emph{adatciklusát} ábrázolja. Az utasítás (jelen esetben az összeadás) A és B operandusai az általános regiszterekből az ALU bemeneti regisztereibe kerülnek, majd az ALU elvégzi rajtuk a kívánt műveletet. Az eredmény a kimeneti regiszterbe íródik, ahonnan az egyik általános regiszterbe íródik vissza. Az adatok által a ciklusban megtett utat nevezzük \emph{adatútnak}.
+
+A CPU \emph{betöltő-dekódoló-végrehajtó} ciklusának lépései a következők:
+
+\begin{enumerate}
+	\item Soron következő utasítás beolvasása a memóriából az utasításregiszterbe
+	\item Az utasításszámláló beállítása a következő utasítás címére
+	\item A beolvasott utasítás típusának meghatározása
+	\item Ha az utasítás a memória egyik szavát használja, helyének megkeresése
+	\item Ha szükséges, a memóriaszó beolvasása az egyik CPU-regiszterbe
+	\item Az utasítás végrehajtása
+	\item Vissza az 1. pontra
+\end{enumerate}
+
+A memória elérése lassú, az utasítás és az adatok beolvasása közben a CPU többi része kihasználatlanul marad. Ennek részleges kiküszöbölésére többféle gyorsítási lehetőség kínálkozik:
+
+\begin{itemize}
+	\item Órajel frekvenciájának növelése (korlátozott)
+	\item Utasításszintű párhuzamosság
+		\begin{itemize}
+			\item Csővezeték
+			\item Szuperskaláris architektúrák
+		\end{itemize}
+	\item Processzorszintű párhuzamosság
+		\begin{itemize}
+			\item Tömbszámítógépek
+			\item Multiprocesszorok
+			\item Multiszámítógépek
+		\end{itemize}
+\end{itemize}
+
+Mielőtt továbbmennénk, definiálnunk kell két fogalmat. A \emph{késleltetés} egy utasítás végrehajtásának időigényét, a \emph{processzor sávszélessége} (processzor sávszélessége, MIPS, Million Instructions Per Second) pedig azt jelenti, hogy a processzor másodpercenként hánymillió utasítást képes végrehajtani.
+
+\subsubsection{Utasításszintű párhuzamosság}
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=\textwidth]{csovezetek}
+	\caption{Példa csővezetékre\label{fig:csovezetek}}	
+\end{figure}
+
+\paragraph{Csővezetékek} A processzorokban már nagyon korán megjelent az \emph{előolvasási puffer} (prefetch buffer), egy olyan regisztercsoport, amibe a gép már az utasítás végrehajtásának vége előtt beolvassa a következő utasítást. Az előolvasás a végrehajtást így két részre osztja: a beolvasásra és magára a végrehajtásra.
+
+A \emph{csővezeték} (pipeline) fogalma ezt a stratégiát fejleszti tovább; az utasítás-végrehajtást it sok (akár 12) részre is felosztják. Minden részlépést párhuzamos működésre képes, dedikált áramkörök hajtanak végre. A~\ref{fig:csovezetek}. ábrán egy ötfázisú csővezeték látható. A végrehajtás fázisai:
+
+\begin{enumerate}
+	\item Utasítás beolvasása a memóriából, majd pufferbe helyezése
+	\item Utasítás típusának és operandusainak meghatározása
+	\item Operandusok megkeresése és beolvasása a regiszterekből vagy a memóriából
+	\item Az utasítás végrehajtása (tipikusan az operandusokat az adatúton végighajtva)
+	\item Az eredmény beírása a megfelelő regiszterbe
+\end{enumerate}
+
+A~\ref{fig:csovezetek_vegrehajtas}. ábra az idő függvényében ábrázolja a csővezeték működését. A csővezetékezés módszere továbbfejleszthető \emph{párhuzamos csővezetékek} alkalmazásával. Ekkor egy közös utasítás-beolvasó egység több, saját ALU-val rendelkező csővezetéket szolgál ki. Ez az elrendezés akkor teszi lehetővé a párhuzamos végrehajtást, ha a csővezetékek nem használnak közös erőforrásokat, és nem függenek egymás eredményétől. Ezt vagy a fordítóprogramnak kell garantálnia, vagy extra hardver detektálja és oldja fel az ütközéseket. Általában 2-4 csővezetéket használnak. A Pentium hasonló megoldást alkalmaz, itt a fő csővezetékbe bármilyen, a másodlagosba csak egész műveleteket végző utasítás kerülhet.
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=10cm]{csovezetek_vegrehajtas}
+	\caption{Csővezeték működése\label{fig:csovezetek_vegrehajtas}}	
+\end{figure}
+
+A csővezetékezés kompromisszum a késleltetés és a sávszélesség között. A sávszélesség nő, mert másodpercenként ötször annyi utasítás végrehajtása ér véget, mint egyébként. Viszont a késleltetés is nő, mert egy utasítást sokszor tovább tart végrehajtani.
+
+\paragraph{Szuperskaláris architektúrák} Kettőnél több csővezeték hozzáadása már túl sok és túl bonyolult hardvert igényel, ezért ehelyett egy másik megoldást alkalmaznak. A processzorban csak egy csővezeték van, viszont ez több működési egységgel is rendelkezik, ahogy az a~\ref{fig:szuperskalaris}. ábrán látható. Az ilyen processzorok jellemzője, hogy egy órajelciklus alatt több utasítás végrehajtását is elkezdhetik. A kulcsgondolat tehát, hogy az utasításkiadás sebessége sokkal nagyobb lehet, mint a végrehajtásuké, mert ez utóbbit több részegység párhuzamosan végzi.
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=\textwidth]{szuperskalaris}
+	\caption{Szuperskaláris processzor öt működési egységgel\label{fig:szuperskalaris}}	
+\end{figure}
+
+\subsubsection{Processzorszintű párhuzamosság}
+
+\paragraph{Tömbszámítógépek} Ha egy feladat megoldásához eltérő adatokon mindig ugyanazt a műveletet kell elvégezni, ezt a tulajdonságot kihasználhatjuk a megoldás párhuzamosítására. A \emph{tömbprocesszorokban} egyetlen vezérlőegység processzorok tömbjének egyszerre adja ki az utasításokat, melyeket azok a saját memóriájukból beolvasott, eltérő adatokon hajtanak végre. A \emph{vektorprocesszor} ettől abban tér el, hogy az összes összeadási műveletet egyetlen, erősen csővezetékezett összeadó végzi.
+
+\paragraph{Multiprocesszorok} Közös memóriát használnak, ezért a processzorok együttműködése külön vezérlést igényel. A processzoroknak saját memóriája is lehet. Közösen használt sínrendszerük van, mely teljesítmény szempontjából gyakran szűk keresztmetszet. Jellemzően párszáz CPU-ból állnak. Könnyebb programozni, nehezebb megépíteni.
+
+\paragraph{Multiszámítógépek} Nincs közös sínük, a processzorok közötti kommunikáció üzenetküldéssel valósul meg. Általában nincs minden gép összekötve egymással, például fastruktúrába, 2D, 3D rácsba vagy gyűrűbe szervezik őket. Ez azt eredményezi, hogy egy üzenetnek általában több számítógépen is át kell haladnia. Tízezer processzort is gond nélkül összekapcsoltak már ezzel a módszerrel. Nehezebb programozni, könnyebb megépíteni.
+
+\subsubsection{CISC és RISC processzorok}
+
+\paragraph{RISC (Reduced Instruction Set Computer)} Csökkentett utasításkészletű számítógép, csak az adatút egyszeri bejárásával végrehajtható utasításokat ismer. Tipikusan kb. 50 elemű utasításkészlet, jobb teljesítmény.
+
+\paragraph{CISC (Complex Instruction Set Computer)} Összetett utasításkészletű számítógép, a gépi kódú utasításokat mikroprogram interpretálja. Ez az architektúra lassabb végrehajtást eredményez.
+
+Az Intel processzorok eleinte CISC architektúrájúak voltak, később ebbe (a 80486-os típustól kezdve) a leggyakoribb utasítások végrehajtására integráltak egy RISC magot.
+
+\subsubsection{Korszerű számítógépek tervezési elvei}
+
+\begin{itemize}
+	\item \emph{Minden utasítást közvetlenül a hardver hajtson végre.} A gyakran használtakat mindenképpen; az interpretált mikroutasításokat kerülni kell.
+	\item \emph{Maximalizálni kell az utasítások kiadási ütemét.} Törekedni kell a párhuzamos utasításkiadásra.
+	\item \emph{Az utasítások legyenek könnyen dekódolhatók.} Kevés mezőből álljanak, legyenek szabályosak, egyforma hosszúak.
+	\item \emph{Csak a betöltő és a tároló utasítások hivatkozzanak a memóriára.} Törekedni kell a párhuzamos utasításkiadásra.
+	\item \emph{Sok regiszter legyen.} A számítások során ne kelljen a lassú memóriába írni.
+\end{itemize}
 
 \end{document}
