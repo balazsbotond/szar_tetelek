@@ -1,4 +1,5 @@
 \documentclass[a4paper]{article}
+
 \usepackage{t1enc}
 \usepackage[magyar]{babel}
 \usepackage[utf8]{inputenc}
@@ -7,8 +8,14 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
+
 \title{Számítógép-architektúrák -- kidolgozott tételsor}
 \author{Balázs Botond}
+
 \begin{document}
 \maketitle
 
@@ -359,9 +366,60 @@ A véges pontosságú számábrázolás új problémákhoz vezet: amikor a műve
 
 \subsubsection{Bináris aritmetika}
 
-A bináris számok összeadása ugyanúgy történik, mint a decimálisaknál. Az utolsó átvitelt az egyes komplemensnél hozzáadjuk a jobb szélső bithez, a kettesnél eldobjuk.
+A bináris számok összeadása ugyanúgy történik, mint a decimálisaknál. Az utolsó átvitelt az egyes komplemensnél hozzáadjuk a jobb szélső bithez, a kettesnél eldobjuk. Általános szabály, hogy ha a két tag ellentétes előjelű, nem lesz túlcsordulás, viszont ha előjelük megegyezik, az eredményé viszont ellentétes, akkor biztos, hogy túlcsordulás következett be.
 
 \subsection{Lebegőpontos számok ábrázolása.}
+
+\subsubsection{Törtszámok reprezentációja}
+
+A törtszámok általános alakban az $n=f \cdot 10^e$ alakban írhatók fel, ahol $f$ a \emph{törtrész} vagy \emph{mantissza}, $e$ pedig a \emph{kitevő} vagy \emph{exponens}. Számítógépeken a tízes helyett 2-, 4-, 8- vagy 16-os alapot használnak.
+
+A \emph{normalizált} vagy \emph{normálalak} azt az alakot jelenti, ahol az első nem nulla számjegy áll az egyesek helyén. A normálalakot a 10-estől eltérő számrendszerekben is értelmezzük.
+
+Két fogalmat definiálunk a törtszámok reprezentációinak jellemzésére.
+\begin{description}
+	\item[Nagyságrend:] A kitevő jegyeinek száma határozza meg. Minél nagyobb, annál nagyobb az ábrázolható maximális érték.
+	\item[Pontosság:] A törtrész jegyeinek száma határozza meg. Minél nagyobb, annál finomabb az ábrázolás ``felbontása", vagyis annál kisebb a különbség két egymás melletti ábrázolt szám között.
+\end{description}
+Ebből láthatjuk, hogy az egészekhez hasonlóan a lebegőpontos ábrázolásnál is az $\mathbb{R}$ valós számhalmaznak csak egy részhalmazát tudjuk ábrázolni (hiszen két valós szám között végtelen sok újabbat találunk). Azt is fontos megjegyezni, hogy az ábrázolási pontosság eltérő nagyságrendű értékeknél más és más, nem egyenletes.
+
+\subsubsection{Az IEEE 754-es lebegőpontos szabvány (1985)}
+
+Kettes hatványalapot használ. Háromféle pontosságú ábrázolást definiál:
+\begin{description}
+	\item[Egyszeres pontosság:] 32 bit -- 1 előjelbit, 8-bites kitevő, 23-bites törtrész. Decimális kiterjedés: kb. $10^-38$-tól $10^38$-ig.
+	\item[Dupla pontosság:] 32 bit -- 1 előjelbit, 11-bites kitevő, 52-bites törtrész. Decimális kiterjedés: kb. $10^-308$-tól $10^308$-ig.
+	\item[Kiterjesztett pontosság:] 32 bit -- kerekítési hibák csökkentésére használják a lebegőpontos aritmetikai egység belsejében.
+\end{description}
+
+A szabvány többféle numerikus típust definiál, ezek:
+
+\vspace{3mm}
+\begin{tabular}{c c c c}
+	& \emph{előjel} & \emph{kitevő} & \emph{törtrész}\\
+	\textbf{Normalizált} & $\pm$ & $0<e<max$ & bitminta\\
+	\textbf{Nem normalizált} & $\pm$ & 0 & nem 0 bitminta\\
+	\textbf{Nulla} & $\pm$ & 0 & 0\\
+	\textbf{Végtelen} & $\pm$ & $111\dots1$ & 0\\
+	\textbf{Nem szám} & $\pm$ & $111\dots1$ & nem 0 bitminta\\
+\end{tabular}
+\vspace{3mm}
+
+A \emph{normalizált} számok első számjegye 1 (a tizedesvesszőtől balra), ezért azt nem ábrázoljuk. Ezt \emph{szignifikánsnak} nevezzük (törtrész helyett). Az ábrázolt szám értéke:
+
+$$\pm (1 + szign) \cdot 2^{e}$$
+
+A \emph{nem normalizált} számok első számjegye 0, ezért azt nem ábrázoljuk. Az ábrázolt szám értéke itt:
+$$\pm (0 + f) \cdot 2^{-126}$$
+Ahol $f$ a törtrész, a kitevő pedig rögzítetten $-126$. Segítségével kezelhető az alulcsordulás: a normalizáltnál kisebb értékeket ábrázolhatunk.
+
+A \emph{végtelen} és az \emph{érvénytelen} (nem szám) értékekkel végzett aritmetikának speciális szabályai vannak:
+\begin{itemize}
+	\item $n/0=\infty$, ahol $n$ egy szám
+	\item $n/\infty=0$, ahol $n$ egy szám
+	\item $\infty + N=\infty$, ahol $N$ bármi lehet
+	\item $0/0=NaN$
+\end{itemize}
 
 \subsection{Szöveg kódolása. Bájtsorrend. Hibadetektáló és -javító kódok.}
 
