@@ -6,6 +6,7 @@
 \usepackage{fullpage}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{amsmath}
 \title{Számítógép-architektúrák -- kidolgozott tételsor}
 \author{Balázs Botond}
 \begin{document}
@@ -307,6 +308,58 @@ $$N = \sum_{i=-k}^{n} b^i d_i\quad0 \leq d < b$$
 A tízesen kívül az informatikában fontos számrendszer a \emph{kettes (bináris)}, a \emph{nyolcas (oktális)} és a \emph{tizenhatos (hexadecimális)}. A kettes számrendszer számjegyei megfeleltethetők a biteknek, ezért a digitális számítógép binárisan számol. Egy oktális számjegy 3, egy hexadecimális 4 bináris számjegynek felel meg, ezért ezek között nagyon egyszerű az átalakítás. A 9-nél nagyobb hexadecimális számjegyeket növekvő sorrendben az A-F betűkkel jelöljük.
 
 \subsubsection{Átváltások számrendszerek között}
+
+Ha az egyik számrendszer alapszáma hatványa a másiknak, egyszerű az átváltás: az alacsonyabb alapszámú számjegyek csoportjai egymás után megfeleltethetők magasabb alapszámú számjegyeknek. A csoportosítás mindkét irányban a tizedesvesszőtől indul. Ugyanazt a bináris számot például így alakíthatjuk oktális és hexadecimális számmá:
+
+$$0\underbrace{0 0 1}_1 \underbrace{1 0 0}_4 \underbrace{1 0 1}_5 \underbrace{0 0 1}_1 \underbrace{0 0 0}_0 , \underbrace{1 0 1}_5 \underbrace{1 0 1}_5 \underbrace{1 0 0_2}_4 = 14510,554_8$$
+
+$$\underbrace{0 0 0 1}_1 \underbrace{1 0 0 1}_9 \underbrace{0 1 0 0}_4 \underbrace{1 0 0 0}_8 , \underbrace{1 0 1 1}_B \underbrace{0 1 1 0}_6 0_2 = 1948,B6_{16}$$
+
+Oktális és hexadecimális számrendszerek között úgy válthatunk legegyszerűbben, hogy a számot először binárisan írjuk fel.
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=8cm]{valtas_tizes_kettes}
+	\caption{Váltás tízesből kettes számrendszerbe\label{fig:valtas_tizes_kettes}}	
+\end{figure}
+
+Egész értéket tízesből kettes számrendszerbe úgy váltunk, hogy a decimális értéket osztjuk 2-vel, majd feljegyezzük a hányados egészrészét és a maradékot. Ezt addig ismételjük, amíg a hányados 0 nem lesz. A bináris számjegyek az osztások maradékai lesznek, a legkisebb helyiértékre az első osztás maradéka kerül.
+
+Decimális szám törtrészét úgy váltjuk binárisba, hogy a számot minden lépésben megszorozzuk kettővel. Ha a kapott szám 1, 1-es bináris számjegyet írunk, és az algoritmusnak vége. Ha 1-nél nagyobb, 1-es számjegyet írunk, kivonunk a számból 1-et, majd az 1. lépéssel folytatjuk. Ha 1-nél kisebb, akkor 0-s számjegyet írunk, majd folytatjuk az 1. lépéssel. Az első szorzás eredménye a legnagyobb helyiértékű számjegyet adja. Előfordul, hogy soha nem fejeződik be az algoritmus, végtelen kettedestörtet kapunk.
+
+Kettesből tízes számrendszerbe úgy váltunk, hogy a legnagyobb helyiértékű bináris számjegytől indulva a számjegyhez hozzáadjuk az eddigi eredmény kétszeresét (ami először 0). Ezt a lépést addig ismételjük, amíg a számjegyek el nem fogynak, az utolsó végeredmény a tízes számrendszerbeli alak.
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=12cm]{valtas_kettes_tizes}
+	\caption{Váltás kettesből tízes számrendszerbe\label{fig:valtas_kettes_tizes}}	
+\end{figure}
+
+\subsubsection{Véges pontosságú számábrázolás}
+
+A központi memória véges számú rekeszből áll, ezért a számítógépek általában rögzített számú bájton tárolják a számokat. Fix bitszélességen azonban csak adott értéktartomány ábrázolható, véges pontossággal.
+
+A véges pontosságú számábrázolás új problémákhoz vezet: amikor a művelet eredménye nagyobb az ábrázolható tartományon, \emph{túlcsordulás}, amikor kisebb, \emph{alulcsordulás} következik be.
+
+\subsubsection{Egész számok ábrázolása}
+
+\paragraph{Nem negatív egészek} Bitek helyiértékének megfelelően ábrázoljuk őket kettes számrendszerbeli számként.
+
+\paragraph{Binárisan kódolt decimális (BCD)} 4 (pakolt) vagy 8 (pakolatlan) bit jelöl egy decimális számjegyet. 4-bites reprezentáció esetén 100, 8-bitesnél 10 különböző szám ábrázolható így egy bájton. Bizonyos értékek nem hordoznak jelentést (pl. a 1011) -- a lehetséges értékeket pazaroljuk.
+
+\paragraph{Negatív egész számok}
+
+\subparagraph{Előjeles abszolútérték} Az előjelet a legfelső biten tároljuk (0 -- pozitív, 1 -- negatív). A további bitek a szám abszolútértékét tartalmazzák. Problémát okoz a 0 kétféle lehetséges ábrázolása ($+0$ és $-0$).
+
+\subparagraph{Egyes komplemens} Az előjelet itt is a legfelső biten tároljuk. A további bitek a szám értékét tartalmazzák, de ha a szám negatív, bitenként negáljuk őket.
+
+\subparagraph{Kettes komplemens} Úgy képezzük, hogy az egyes komplemens alakhoz $1$-et adunk. Ha a bal szélső bitnél átvitel jelenik meg, eldobjuk. A $0$ érték így csak egyféleképpen ábrázolható, viszont az ábrázolási tartomány nem szimmetrikus (bájtnál $-128$ és $+127$ között).
+
+\subparagraph{$2^{m-1}$ többletes} Itt $m$ a bitek számát jelenti. $m=8$ esetén így 128 többletes ábrázolást alkalmazunk. A reprezentációt úgy kapjuk, hogy a többletes értékét hozzáadjuk az ábrázolandó számhoz. Így tehát a negatív számok képe kisebb, a nulláé egyenlő, a pozitívaké nagyobb a többletesnél. A kettes komplemenstől csak abban tér el, hogy az előjelbit fordított. Lebegőpontos számok kitevőjéhez használják.
+
+\subsubsection{Bináris aritmetika}
+
+A bináris számok összeadása ugyanúgy történik, mint a decimálisaknál. Az utolsó átvitelt az egyes komplemensnél hozzáadjuk a jobb szélső bithez, a kettesnél eldobjuk.
 
 \subsection{Lebegőpontos számok ábrázolása.}
 
