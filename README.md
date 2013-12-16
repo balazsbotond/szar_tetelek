@@ -1,4 +1,6 @@
-szar_tetelek
-============
+Számítógép-architektúrák -- kidolgozott tételek
+===============================================
 
-SZTE Számítógép-architektúrák kidolgozott tételei
+Próbáltam viszonylag összeszedni, pár dologgal a könyv alapján kiegészíteni az anyagot. Minden észrevételt, javaslatot örömmel fogadok.
+
+A legfrissebb PDF letölthető innen: https://github.com/balazsbotond/szar_tetelek/releases
