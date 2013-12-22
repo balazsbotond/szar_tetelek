@@ -379,7 +379,7 @@ A \emph{normalizált} vagy \emph{normálalak} azt az alakot jelenti, ahol az els
 Két fogalmat definiálunk a törtszámok reprezentációinak jellemzésére.
 \begin{description}
 	\item[Nagyságrend:] A kitevő jegyeinek száma határozza meg. Minél nagyobb, annál nagyobb az ábrázolható maximális érték.
-	\item[Pontosság:] A törtrész jegyeinek száma határozza meg. Minél nagyobb, annál finomabb az ábrázolás ``felbontása", vagyis annál kisebb a különbség két egymás melletti ábrázolt szám között.
+	\item[Pontosság:] A törtrész jegyeinek száma határozza meg. Minél nagyobb, annál finomabb az ábrázolás ``felbontása'', vagyis annál kisebb a különbség két egymás melletti ábrázolt szám között.
 \end{description}
 Ebből láthatjuk, hogy az egészekhez hasonlóan a lebegőpontos ábrázolásnál is az $\mathbb{R}$ valós számhalmaznak csak egy részhalmazát tudjuk ábrázolni (hiszen két valós szám között végtelen sok újabbat találunk). Azt is fontos megjegyezni, hogy az ábrázolási pontosság eltérő nagyságrendű értékeknél más és más, nem egyenletes.
 
@@ -422,5 +422,73 @@ A \emph{végtelen} és az \emph{érvénytelen} (nem szám) értékekkel végzett
 \end{itemize}
 
 \subsection{Szöveg kódolása. Bájtsorrend. Hibadetektáló és -javító kódok.}
+
+\subsubsection{Szöveg kódolása}
+
+\paragraph{ASCII (1963)} A bájtok értékei karaktereket jelentenek. A karakter lehet szám, a latin ábécé betűje, írásjel vagy vezérlőkód. Csak az alsó 7 bit használatos.
+
+\paragraph{Kiterjesztett ASCII} A 128-255 közötti értékek is definiáltak, pl. nemzetközi karaktereket, szimbólumokat tartalmaznak. Még így is nagyon kevés a hely, ezért különféle kiterjesztett karakterkészleteket, ``kódlapokat'' használnak -- ez az \emph{ISO 8859}-es kódolási szabvány. Ez sem jelent tökéletes megoldást, egyszerre több nyelv karakterei, vagy a kínai, japán karakterek nem férnek bele.
+
+\paragraph{Unicode (UTF) és ISO/EIC 10646 szabvány (1989-1990)} Az \emph{UTF-16} kódolás rögzítetten 16-bites (2-bájtos). \texttt{0} és \texttt{10FFFF} közötti kódok lehetségesek. A bájtsorrend architektúrafüggő, az opcionális BOM (Byte Order Mark) segítségével automatikusan megállapítható. Értéke \texttt{U+FEFF}. Az \emph{UTF-32} 4 bájton tárol egy karaktert, így a legnagyobb tárolható érték \texttt{7FFFFFFF}-re nő. A bájtsorrend itt is problémát jelent. Szövegek helyett inkább csak 1-1 karakter leírására használják.
+
+\subsubsection{Bájtsorrend}
+
+\begin{description}
+	\item[Little-endian:] A szó \emph{alacsonyabb} helyiértékeinek bájtjai szerepelnek az alacsonyabb memóriacímeken.
+	\item[Big-endian:] A szó \emph{magasabb} helyiértékeinek bájtjai szerepelnek az alacsonyabb memóriacímeken.
+\end{description}
+
+Eltérő bájtsorrendű rendszerek közöt a bitfolyamként továbbított adatok összekeverednek. \emph{Sorrendi} továbbításnál a bájttömbként tárolt stringek helyesen, a több bájton tárolt egész értékek helytelenül tárolódnak. \emph{A bájtokat megcserélve} a stringek karaktereinek (beleértve a \texttt{\textbackslash0} stringvégződést is!) sorrendje összekeveredik, de az egészek helyesen tárolódnak. Az alábbi megoldási lehetőségek vannak:
+\begin{description}
+	\item[Szöveges kódolás:] XML, JSON, stb. alkalmazása.
+	\item[Bájtsorrend-jelölő érték használata:] Az adat elején egy olyan érték elhelyezése, amelyből megállapítható a bitfolyam bájtsorrendje (pl. Unicode esetén a \emph{Byte Order Mark} -- BOM, értéke \texttt{U+FEFF}).
+\end{description}
+
+\subsubsection{Hibadetektáló és -javító kódok}
+
+A memória hibázhat, például hirtelen áramlökés vagy hardverhiba hatására. Ez, ha adatterületen történik, számítási hibához, ha kódterületen, hibás működéshez, lefagyáshoz vezethet. A hibák redundancia bevezetésével védhetők ki. \emph{Detekció} esetén a rendszer bizonyos hibákat képes észlelni és az aktuális program futását leállítani. \emph{Hibajavításnál} bizonyos hibák esetén helyreállítható a legvalószínűbb helyes bájtérték.
+
+Egyszerű példa hibadetekcióra a \emph{paritásbit alkalmazása}. Tegyünk hozzá minden bájthoz egy kilencedik bitet, amely akkor legyen 1, ha a bájtban páratlan számú 1-es számjegy van (biztosítja, hogy a 9 biten mindig páros számú 1-es érték legyen). Ha a paritásbit értéke nem megfelelő, az memóriahibára utal. Módszerünk azonban korlátozott: csak páratlan számú bithibát tud detektálni, javításra pedig nem képes.
+
+\begin{description}
+	\item[Kódszó:] $m$ adatbit és $r$ ellenőrző bit $n=m+r$ bites együttese.
+	\item[Hamming-távolság:] két bináris szám eltérő számjegyeinek száma.
+	\item[Kód Hamming-távolsága:] Ha ismerjük az ellenőrzőbitek kiszámításának algoritmusát, megalkothatjuk az érvényes kódszavak teljes listáját. Keressük meg azt a két kódszót a listán, melyek Hamming-távolsága minimális; ez a teljes kód Hamming-távolsága.
+\end{description}
+
+Egy kód hibadetektáló és hibajavító tulajdonságai Hamming-távolságától függnek. Legalább $d$ darab bithiba detektálásához legalább $d+1$ távolságú kódolás szükséges, mert így $d$ bithiba egyetlen érvényes kódszót sem alakíthat át egy másikba. $d$ bithiba \emph{javításához} $2d+1$ távolságú kódolásra van szükség, mert így az érvényes kódok olyan távol vannak egymástól, hogy még $d$ darab változtatás után is közelebb van az eredeti kódszó, mint bármely másik.
+
+Tegyük fel, hogy egy egybites hibákat kijavítani képes kódolást szeretnénk tervezni $m$ adatbit és $r$ ellenőrző bit használatával. A $2^m$ legális memóriaszó mindegyikétől pontosan $n$ darab illegális kódszó van 1 bit távolságra -- ezeket úgy kapjuk, hogy az $n$-bites kódszó bitjeit egyesével, sorban negáljuk. Így mind a $2^m$ legális szóhoz $n+1$ bitmintát kell rendelnünk ($n$ lehetséges hiba és a helyes minta). Mivel a bitminták teljes száma $2^n$, ezért a következőnek kell teljesülnie:
+\begin{align*}
+	(n + 1)2^m     & \leq 2^n     & (n = m + r)         \\
+	(m + r + 1)2^m & \leq 2^{m+r} & (n^{a+b} = n^a n^b) \\
+	(m + r + 1)2^m & \leq 2^m 2^r & : 2^m               \\
+	m + r + 1      & \leq 2^r
+\end{align*}
+Ez az összefüggés alsó korlátot ad az egybites hibák javításához szükséges ellenőrzőbitek számára.
+
+Az alsó korlátot \emph{Richard Hamming} algoritmusával (1950) el is lehet érni. Előbb azonban a négybites szavak hibajavító kódolását egy egyszerű grafikus példával illusztráljuk (ld.~\ref{fig:hibajavitas}. ábra). Az $A$, $B$ és $C$ halmazok metszeteibe a szó értékét ($1100$) írjuk, a metszeteken kívüli részekre pedig paritásbiteket helyezünk úgy, hogy minden halmazban páros számú $1$-es bit legyen. Ha az $AC$ területen hiba keletkezik, és a $0$-s bit $1$-esre változik, az $A$ és a $C$ halmazok paritása rossz lesz. Az egyetlen olyan egybites változtatás, amely helyreállítja a paritást, az $AC$ $0$-ra állítása. Így a számítógép az egybites memóriahibákat automatikusan helyre tudja állítani.
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=\textwidth]{hibajavitas}
+	\caption{(a) Az $1100$ kódolása. (b) Paritásbitek hozzáadva. (c) Hiba az AC-ben\label{fig:hibajavitas}}	
+\end{figure}
+
+A Hamming-algoritmussal bármekkora, $m$ hosszúsűgú memóriaszóhoz tudunk hibajavító kódot gyártani $r$ paritásbit hozzáadásával. A biteket 1-től (és nem 0-tól) számozzuk; az 1. bit a bal szélső (legnagyobb helyiértékű). Minden olyan bit, amelynek sorszáma a 2 hatványa, paritásbit, a több adatot tárol. Egy 16-bites szóhoz így például 5 paritásbitet adunk -- az 1, 2, 4, 8, 16 sorszámú bitek a paritásbitek. Így összesen 21-bites memóriaszót kapunk, 16 adat- és 5 paritásbittel. A példában páros paritást fogunk használni. A paritásbitek a következő biteket ellenőrzik:
+\begin{align*}
+	1 &\rightarrow 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21 \\
+	2 &\rightarrow 2, 3, 6, 7, 10, 11, 14, 15, 18, 19    \\
+	4 &\rightarrow 4, 5, 6 7, 12, 13, 14, 15, 20, 21     \\
+	8 &\rightarrow 8, 9, 10, 11, 12, 13, 14, 15          \\
+	16 &\rightarrow 16, 17, 18, 19, 20, 21               \\
+\end{align*}
+Általánosan, a $b$-edik bitet azon $b_1, b_2, \dots, b_j$ bitek ellenőrzik, melyekre $b_1 + b_2 + \dots + b_j = b$. Például az 5. bitet az 1-es és a 4-es bitek ellenőrzik, mert $1+4=5$. A hibajavítás úgy történik, hogy kiszámoljuk a paritásokat, és összeadjuk a helytelen értékű paritásbitek sorszámát, így megkapjuk a negálandó bit sorszámát.
+
+\begin{figure}[h]	
+	\centering
+		\includegraphics[width=\textwidth]{hamming}
+	\caption{Hamming-kód az 1111000010101110 16-bites memóriaszóhoz 5 ellenőrző bit hozzáadásával.\label{fig:hamming}}	
+\end{figure}
 
 \end{document}
