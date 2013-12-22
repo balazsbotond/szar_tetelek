@@ -491,4 +491,115 @@ A Hamming-algoritmussal bármekkora, $m$ hosszúsűgú memóriaszóhoz tudunk hi
 	\caption{Hamming-kód az 1111000010101110 16-bites memóriaszóhoz 5 ellenőrző bit hozzáadásával.\label{fig:hamming}}	
 \end{figure}
 
+\section{Előadás}
+
+\subsection{Kapuk és Boole-algebra. Tranzisztor, inverter, \textsc{nem-és} (\textsc{nand}) kapu, \textsc{nem-vagy} (\textsc{nor}) kapu, \textsc{és} (\textsc{and}), \textsc{vagy} (\textsc{or}) kapuk.}
+
+\subsubsection{Kapuk és Boole-algebra}
+
+A digitális árakörök $0$ és $1$ értékeit (valójában 0-1 és 2-5 volt közötti feszültséget jelentenek) megfeleltethetjük a \emph{Boole-algebra} logikai \textsc{hamis} és \textsc{igaz} értékeinek. Áramköri elemekből logikai kapukat (pl. \textsc{and}, \textsc{or}) építhetünk, melyekkel tetszőleges logikai függvény megvalósítható.
+
+\subsubsection{Tranzisztor, inverter, logikai kapuk}
+
+A tranzisztor árammal vezérelt kapcsolóként is használható. Állapota \emph{zárt}, ha $V_{be}$ bizonyos szint alatt van, ellenállása ilyenkor kvázi végtelen ($V_{ki} \approx V_{CC}$). Ha $V_{be}$ meghaladja a kritikus értéket, \emph{kinyit}, ekkor $V_{ki} = 0V$ lesz. Ha a logikai jel a $V_{be}$, egyetlen tranzisztor inverterként (\textsc{not}-kapu) működik. Két tranzisztor soros, illetve párhuzamos kapcsolásával \textsc{nand}- és \textsc{nor}-kaput építhetünk (ld.~\ref{fig:kapuk_tranzisztor}. ábra). Az összes kapu áramköri szimbóluma és igazságtáblája a~\ref{fig:kapuk}. ábrán látható.
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=\textwidth]{kapuk_tranzisztor}
+	\caption{\textsc{not}-, \textsc{nand}- és \textsc{nor}-kapuk\label{fig:kapuk_tranzisztor}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=\textwidth]{kapuk}
+	\caption{Logikai kapuk áramköri szimbóluma és igazságtáblája.\label{fig:kapuk}}
+\end{figure}
+
+\subsection{Boole-algebra. Boole-függvények megvalósítása. Áramköri ekvivalencia.}
+
+\subsubsection{Boole-algebra}
+
+Kapuk kombinációjából felépíthető áramkörök leírására szolgál. A változók értéke és a függvények értékkészlete a ${0, 1}$ halmaz. A \emph{Boole-függvények} egy vagy több bemeneti változóból egy kimeneti értéket állítanak elő. A fügvényt \emph{logikai formulával} vagy \emph{igazságtáblával} definiáljatjuk. Utóbbi esetben $n$ bemenő változó esetén $2^n$ lehetséges kombinációra kell megadni a kimenő értékeket. A táblázat egy sora adott bemeneti értékek esetén megadja a függvényértéket.
+
+Tekintsük példáula \emph{háromváltozós többségi logikai függvényt}. Ez ún. \emph{diszjunktív normálformával} megadva így néz ki:
+
+$$M = f(A, B, C) = \bar{A}BC + A\bar{B}C + AB\bar{C} + ABC$$
+
+A diszjunktív normálforma többváltozós függvényeknél sokkal kényelmesebb megadási mód, mint az igazságtábla.
+
+\subsubsection{Boole-függvények megvalósítása}
+
+Egy $n$-változós függvány legfeljebb $2^n$ darab $n$-változós logikai szorzat összege. Áramköri megvalósítása szabványos logikai kapuk segítségével történik, de fontos, hogy az absztrakt Boole-függvény és az elektronikus megvalósítás között különbség van. Utóbbi esetben a változókat elektromos jelek, a műveleteket pedig kapuk reprezentálják.
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=\textwidth]{tobbsegifv}
+	\caption{Többségi függvény (a) igazságtáblája és (b) áramköri megvalósítása.\label{fig:tobbsegifv}}
+\end{figure}
+
+\paragraph{Logikai függvény megvalósításának lépései}
+\begin{enumerate}
+	\item Felírjuk a függvény igazságtábláját
+	\item \textsc{nem}-kapukkal előállítjuk minden bemenet negáltját
+	\item Minden olyan sorhoz, amelynek eredményoszlopa $1$-est tartalmaz, \textsc{és}-kapukat helyezünk el
+	\item Az \textsc{és}-kapukat összekötjük a megfelelő bemenetekkel
+	\item Az összes \textsc{és}-kapu kimenetét bekötjük egy \textsc{vagy}-kapuba
+\end{enumerate}
+
+Az áramköröket kényelmesebb és hatékonyabb úgy megvalósítani, hogy csak egyféle kaput használunk. Ehhez ún. \emph{teljes} kapukkal kell dolgoznunk, melyekkel bármilyen Boole-függvény kiszámítható. Erre egyedül a \textsc{nem-és} és a \textsc{nem-vagy} kapuk képesek.
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=\textwidth]{helyettesitokapuk}
+	\caption{(a) \textsc{not}-, (b) \textsc{and}- és (c) \textsc{or}-kapuk megvalósítása \textsc{nand}- és \textsc{nor}-kapuk segítségével.\label{fig:helyettesitokapuk}}
+\end{figure}
+
+\subsubsection{Áramköri ekvivalencia}
+
+Logikai függvények megvalósításakor mindig törekedni kell a kapuk számának csökkentésére. Így az alkatrész ára, a nyomtatott áramköri lap nagysága és az áramfogyasztás is csökken. Találni kell egy olyan függvényt, amely ugyanazt a függvényt számolja ki, mint az eredeti, de kevesebb kapuból áll -- ennek fontos eszköze a Boole-algebra. Az alábbi táblázat ennek legfontosabb szabályait mutatja be.
+
+\vspace{3mm}
+\begin{tabular}{l c c}
+	\textbf{Név}          & \textbf{\textsc{és}-forma} & \textbf{\textsc{vagy}-forma} \\
+	Identitásszabály      & $1A = A$                        & $0 + A = A$             \\
+	Nullszabály           & $0A = 0$                        & $1 + A = 1$             \\
+	Idempotens szabály    & $AA = A$                        & $A + A = A$             \\
+	Inverzszabály         & $A\bar{A} = 1$                  & $A + \bar{A} = 1$       \\
+	Kommutatív szabály    & $AB = BA$                       & $A + B = B + A$         \\
+	Asszociatív szabály   & $(AB)C = A(BC)$                 & $(A+B)+C = A+(B+C)$     \\
+	Disztribúciós szabály & $A + BC = (A + B)(A + C)$       & $A(B+C) = AB + AC$      \\
+	Abszorpciós szabály   & $A(A + B) = A$                  & $A + AB = A$            \\
+	De Morgan-szabály     & $\overline{AB}=\bar{A}+\bar{B}$ & $\overline{A+B}=\bar{A}\bar{B}$
+\end{tabular}
+\vspace{3mm}
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=10cm]{ekvivalencia}
+	\caption{Példa ekvivalens áramkörökre.\label{fig:ekvivalencia}}
+\end{figure}
+
+Figyeljük meg, hogy minden szabálynak két formája van, és ezek egymásnak \emph{duálisai} -- az \textsc{és} és \textsc{vagy} műveletek, illetve a $0$ és $1$ igazságértékek cseréjével egymásból előállíthatók. A szabálok igazságtáblájukkal bizonyíthatók. A fenti szabályokon kívül fontos még a De Morgan-szabály kiterjesztése:
+$$\overline{ABC} = \bar{A} + \bar{A} + \bar{C}$$
+
+A szabályok alapján alternatív áramköri szimbólumokat adhatunk meg néhány ismert kapuhoz (ld.~\ref{fig:alternativszimbolumok}. ábra). Az, hogy az egyes feszültségértékekhez milyen igazságértéket rendelünk, tulajdonképpen önkényes, ahogy azt a~\ref{fig:pozneglogika}. ábra is mutatja. Újabb példa az áramköri ekvivalenciára az \textsc{xor}-művelet \textsc{nand}-kapukkal történő megvalósítása (ld.~\ref{fig:xoralternativak}. ábra).
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=12cm]{alternativszimbolumok}
+	\caption{Új áramköri szimbólumok.\label{fig:alternativszimbolumok}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=8cm]{pozneglogika}
+	\caption{(a) Elektronikus karakterisztika, (b) pozitív és (c) negatív logika.\label{fig:pozneglogika}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=10cm]{xoralternativak}
+	\caption{\textsc{xor}-művelet igazságtáblája és háromféle áramköri megvalósítása.\label{fig:xoralternativak}}
+\end{figure}
+
 \end{document}
