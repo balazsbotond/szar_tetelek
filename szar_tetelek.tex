@@ -155,7 +155,7 @@ A mikroprogramok a komplex utasítások elburjánzása miatt nagyok, lassúak le
 
 \subsubsection{A Neumann-elvű gép főbb részei}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\caption{A Neumann-elvű gép sematikus rajza}
 	\label{fig:neumann}
 	\includegraphics[width=\textwidth]{neumann}
@@ -193,7 +193,7 @@ A CPU-ban kis méretű, nagy sebességű memóriarekeszek, regiszterek is vannak
 
 \subsubsection{Utasítás-végrehajtás}
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=10cm]{adatut}
 	\caption{Adatút\label{fig:adatut}}	
@@ -234,7 +234,7 @@ Mielőtt továbbmennénk, definiálnunk kell két fogalmat. A \emph{késlelteté
 
 \subsubsection{Utasításszintű párhuzamosság}
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=\textwidth]{csovezetek}
 	\caption{Példa csővezetékre\label{fig:csovezetek}}	
@@ -254,7 +254,7 @@ A \emph{csővezeték} (pipeline) fogalma ezt a stratégiát fejleszti tovább; a
 
 A~\ref{fig:csovezetek_vegrehajtas}. ábra az idő függvényében ábrázolja a csővezeték működését. A csővezetékezés módszere továbbfejleszthető \emph{párhuzamos csővezetékek} alkalmazásával. Ekkor egy közös utasítás-beolvasó egység több, saját ALU-val rendelkező csővezetéket szolgál ki. Ez az elrendezés akkor teszi lehetővé a párhuzamos végrehajtást, ha a csővezetékek nem használnak közös erőforrásokat, és nem függenek egymás eredményétől. Ezt vagy a fordítóprogramnak kell garantálnia, vagy extra hardver detektálja és oldja fel az ütközéseket. Általában 2-4 csővezetéket használnak. A Pentium hasonló megoldást alkalmaz, itt a fő csővezetékbe bármilyen, a másodlagosba csak egész műveleteket végző utasítás kerülhet.
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=10cm]{csovezetek_vegrehajtas}
 	\caption{Csővezeték működése\label{fig:csovezetek_vegrehajtas}}	
@@ -264,7 +264,7 @@ A csővezetékezés kompromisszum a késleltetés és a sávszélesség között
 
 \paragraph{Szuperskaláris architektúrák} Kettőnél több csővezeték hozzáadása már túl sok és túl bonyolult hardvert igényel, ezért ehelyett egy másik megoldást alkalmaznak. A processzorban csak egy csővezeték van, viszont ez több működési egységgel is rendelkezik, ahogy az a~\ref{fig:szuperskalaris}. ábrán látható. Az ilyen processzorok jellemzője, hogy egy órajelciklus alatt több utasítás végrehajtását is elkezdhetik. A kulcsgondolat tehát, hogy az utasításkiadás sebessége sokkal nagyobb lehet, mint a végrehajtásuké, mert ez utóbbit több részegység párhuzamosan végzi.
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=\textwidth]{szuperskalaris}
 	\caption{Szuperskaláris processzor öt működési egységgel\label{fig:szuperskalaris}}	
@@ -324,7 +324,7 @@ $$\underbrace{0 0 0 1}_1 \underbrace{1 0 0 1}_9 \underbrace{0 1 0 0}_4 \underbra
 
 Oktális és hexadecimális számrendszerek között úgy válthatunk legegyszerűbben, hogy a számot először binárisan írjuk fel.
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=8cm]{valtas_tizes_kettes}
 	\caption{Váltás tízesből kettes számrendszerbe\label{fig:valtas_tizes_kettes}}	
@@ -336,7 +336,7 @@ Decimális szám törtrészét úgy váltjuk binárisba, hogy a számot minden l
 
 Kettesből tízes számrendszerbe úgy váltunk, hogy a legnagyobb helyiértékű bináris számjegytől indulva a számjegyhez hozzáadjuk az eddigi eredmény kétszeresét (ami először 0). Ezt a lépést addig ismételjük, amíg a számjegyek el nem fogynak, az utolsó végeredmény a tízes számrendszerbeli alak.
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=12cm]{valtas_kettes_tizes}
 	\caption{Váltás kettesből tízes számrendszerbe\label{fig:valtas_kettes_tizes}}	
@@ -469,7 +469,7 @@ Ez az összefüggés alsó korlátot ad az egybites hibák javításához szüks
 
 Az alsó korlátot \emph{Richard Hamming} algoritmusával (1950) el is lehet érni. Előbb azonban a négybites szavak hibajavító kódolását egy egyszerű grafikus példával illusztráljuk (ld.~\ref{fig:hibajavitas}. ábra). Az $A$, $B$ és $C$ halmazok metszeteibe a szó értékét ($1100$) írjuk, a metszeteken kívüli részekre pedig paritásbiteket helyezünk úgy, hogy minden halmazban páros számú $1$-es bit legyen. Ha az $AC$ területen hiba keletkezik, és a $0$-s bit $1$-esre változik, az $A$ és a $C$ halmazok paritása rossz lesz. Az egyetlen olyan egybites változtatás, amely helyreállítja a paritást, az $AC$ $0$-ra állítása. Így a számítógép az egybites memóriahibákat automatikusan helyre tudja állítani.
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=\textwidth]{hibajavitas}
 	\caption{(a) Az $1100$ kódolása. (b) Paritásbitek hozzáadva. (c) Hiba az AC-ben\label{fig:hibajavitas}}	
@@ -485,7 +485,7 @@ A Hamming-algoritmussal bármekkora, $m$ hosszúsűgú memóriaszóhoz tudunk hi
 \end{align*}
 Általánosan, a $b$-edik bitet azon $b_1, b_2, \dots, b_j$ bitek ellenőrzik, melyekre $b_1 + b_2 + \dots + b_j = b$. Például az 5. bitet az 1-es és a 4-es bitek ellenőrzik, mert $1+4=5$. A hibajavítás úgy történik, hogy kiszámoljuk a paritásokat, és összeadjuk a helytelen értékű paritásbitek sorszámát, így megkapjuk a negálandó bit sorszámát.
 
-\begin{figure}[h]	
+\begin{figure}[htbp]	
 	\centering
 		\includegraphics[width=\textwidth]{hamming}
 	\caption{Hamming-kód az 1111000010101110 16-bites memóriaszóhoz 5 ellenőrző bit hozzáadásával.\label{fig:hamming}}	
@@ -503,13 +503,13 @@ A digitális árakörök $0$ és $1$ értékeit (valójában 0-1 és 2-5 volt k�
 
 A tranzisztor árammal vezérelt kapcsolóként is használható. Állapota \emph{zárt}, ha $V_{be}$ bizonyos szint alatt van, ellenállása ilyenkor kvázi végtelen ($V_{ki} \approx V_{CC}$). Ha $V_{be}$ meghaladja a kritikus értéket, \emph{kinyit}, ekkor $V_{ki} = 0V$ lesz. Ha a logikai jel a $V_{be}$, egyetlen tranzisztor inverterként (\textsc{not}-kapu) működik. Két tranzisztor soros, illetve párhuzamos kapcsolásával \textsc{nand}- és \textsc{nor}-kaput építhetünk (ld.~\ref{fig:kapuk_tranzisztor}. ábra). Az összes kapu áramköri szimbóluma és igazságtáblája a~\ref{fig:kapuk}. ábrán látható.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=\textwidth]{kapuk_tranzisztor}
 	\caption{\textsc{not}-, \textsc{nand}- és \textsc{nor}-kapuk\label{fig:kapuk_tranzisztor}}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=\textwidth]{kapuk}
 	\caption{Logikai kapuk áramköri szimbóluma és igazságtáblája.\label{fig:kapuk}}
@@ -531,7 +531,7 @@ A diszjunktív normálforma többváltozós függvényeknél sokkal kényelmeseb
 
 Egy $n$-változós függvány legfeljebb $2^n$ darab $n$-változós logikai szorzat összege. Áramköri megvalósítása szabványos logikai kapuk segítségével történik, de fontos, hogy az absztrakt Boole-függvény és az elektronikus megvalósítás között különbség van. Utóbbi esetben a változókat elektromos jelek, a műveleteket pedig kapuk reprezentálják.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=\textwidth]{tobbsegifv}
 	\caption{Többségi függvény (a) igazságtáblája és (b) áramköri megvalósítása.\label{fig:tobbsegifv}}
@@ -548,7 +548,7 @@ Egy $n$-változós függvány legfeljebb $2^n$ darab $n$-változós logikai szor
 
 Az áramköröket kényelmesebb és hatékonyabb úgy megvalósítani, hogy csak egyféle kaput használunk. Ehhez ún. \emph{teljes} kapukkal kell dolgoznunk, melyekkel bármilyen Boole-függvény kiszámítható. Erre egyedül a \textsc{nem-és} és a \textsc{nem-vagy} kapuk képesek.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=\textwidth]{helyettesitokapuk}
 	\caption{(a) \textsc{not}-, (b) \textsc{and}- és (c) \textsc{or}-kapuk megvalósítása \textsc{nand}- és \textsc{nor}-kapuk segítségével.\label{fig:helyettesitokapuk}}
@@ -573,7 +573,7 @@ Logikai függvények megvalósításakor mindig törekedni kell a kapuk számán
 \end{tabular}
 \vspace{3mm}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=10cm]{ekvivalencia}
 	\caption{Példa ekvivalens áramkörökre.\label{fig:ekvivalencia}}
@@ -584,22 +584,164 @@ $$\overline{ABC} = \bar{A} + \bar{A} + \bar{C}$$
 
 A szabályok alapján alternatív áramköri szimbólumokat adhatunk meg néhány ismert kapuhoz (ld.~\ref{fig:alternativszimbolumok}. ábra). Az, hogy az egyes feszültségértékekhez milyen igazságértéket rendelünk, tulajdonképpen önkényes, ahogy azt a~\ref{fig:pozneglogika}. ábra is mutatja. Újabb példa az áramköri ekvivalenciára az \textsc{xor}-művelet \textsc{nand}-kapukkal történő megvalósítása (ld.~\ref{fig:xoralternativak}. ábra).
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=12cm]{alternativszimbolumok}
 	\caption{Új áramköri szimbólumok.\label{fig:alternativszimbolumok}}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=8cm]{pozneglogika}
 	\caption{(a) Elektronikus karakterisztika, (b) pozitív és (c) negatív logika.\label{fig:pozneglogika}}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 		\includegraphics[width=10cm]{xoralternativak}
 	\caption{\textsc{xor}-művelet igazságtáblája és háromféle áramköri megvalósítása.\label{fig:xoralternativak}}
 \end{figure}
+
+\subsection{Alapvető digitális logikai áramkörök. Integrált áramkörök. Kombinációs áramkörök.
+Multiplexerek, demultiplexer. Dekódolók. Összehasonlítók.}
+
+\subsubsection{Alapvető digitális logikai áramkörök}
+
+Manapság kevés áramkört építenek különálló kapukból, inkább számos kaput tartalmazó építőblokkokat alkalmaznak. Ilyenek az \emph{integrált áramkörök} (Integrated Circuit, IC). Tokjuk téglatest alakú, műanyagból vagy kerámiából készül. Lábaikkal kapcsolódnak az áramkör többi eleméhez, melyeket vagy beforrasztanak az áramköri lapba, vagy foglalatba helyeznek. Minden lábuk egy kapu bemenete vagy kimenete. A kétsoros lábazást és a belső integrált áramkört együtt \emph{Dual Inline Package}-nek (DIP) nevezik.
+
+\subsubsection{Integrált áramkörök}
+
+\begin{description}
+	\item[SSI (Small Scale Integration):] kis integráltásgú áramkör, 1-10 kaput tartalmaz.
+	\item[MSI (Medium Scale Integration):] közepes integráltságú, 10-100 kapu.
+	\item[LSI (Large Scale Integration):] nagy integráltságú, 100-100\,000 kapu.
+	\item[VLSI (Very Large Scale Integration):] nagyon nagy integráltásg, több mint 100\,000 kapu.
+\end{description}
+
+A~\ref{fig:ssi}. ábra egy 4 \textsc{nand}-kaput tartalmazó SSI-lapkát ábrázol. A kapukhoz 12 láb tartozik, kapunként két bemenet és egy kimenet. Ezen kívül a $V_{CC}$ feszültség és a föld (GND) kap egy-egy lábat.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=6cm]{ssi}
+	\caption{4 \textsc{nand}-kaput tartalmazó SSI-lapka.\label{fig:ssi}}
+\end{figure}
+
+Az \emph{ideális kapu} kimenete azonnal előáll, amint a bemenetet alkalmazzuk, viszont a valóságban a lapkáknak véges kapukésleltetésük van. Ez tartalmazza a jel terjedési és a kapu kapcsolási idejét is.
+
+A mai VLSI-lapkákon kb. 10 millió tranzisztor van, ez kb. 5 millió kapunak felel meg. Ezek független használatához 15\,000\,002 lábra lenne szükség, ami nyilvánvalóan kivitelezhetetlen. Így ezek nagy kapu/láb arányú áramkörök, csak korlátozott számú kapcsolatuk lehetséges a külső áramkörrel.
+
+\subsubsection{Kombinációs áramkörök}
+
+Ezek több bemenettel és kimenettel rendelkező logikai áramkörök, amelyek kimenetét egyértelműen meghatározzák a bemenetek (nem minden áramkör ilyen, pl. a memóriaelemeknél az állapot is számít).
+
+\subsubsection{Multiplexerek, demultiplexer}
+
+\paragraph{Multiplexer} Olyan áramkör, amelynek $n$ vezérlőbemenete, $2^n$ adatbemenete és $1$ adatkimenete van. A vezérlőbemenetek egy adatbemenetet címeznek meg, ennek jele jut az adatkimenetre (ld.~\ref{fig:multiplexer}. ábra). $n=3$ esetén áram és föld lábakkal együtt egy 14 lábas tokban helyezhető el. Bármely $n$-változós igazságtábla megvalósítható vele, például a többségi függvény (ld.~\ref{fig:tobbsegifvmux}. ábra).
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=10cm]{multiplexer}
+	\caption{Multiplexer logikai áramköre.\label{fig:multiplexer}}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=6cm]{tobbsegifvmux}
+	\caption{Többségi függvény megvalósítása multiplexerrel.\label{fig:tobbsegifvmux}}
+\end{figure}
+
+\paragraph{Demultiplexer} A multiplexer fordítottja. $1$ adatbemenete, $2^n$ adatkimenete és $n$ vezérlőbemenete van, utóbbi határozza meg, hogy az adatbemenet jele melyik adatkimeneten jelenik meg.
+
+\subsubsection{Dekódolók}
+
+Bemenetük egy $n$-bites szám, kimenetük $2^n$ darab jel, ezek közül a bemenetek egyet kiválasztanak, és azt $1$-re állítják. A példán (\ref{fig:dekodolo}. ábra) az $n=3$ eset szerepel. Dekódolót használhatunk pl. akkor, ha 8 db. 1 MB-os memórialapkánk van, és ezek bájtjait egységesen szeretnénk címezni. Ekkor a memóriacím felső 3 bitje egy dekódoló vezérlőjele lehet, amely a lapkát választja ki.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=10cm]{dekodolo}
+	\caption{3-8 dekódoló.\label{fig:dekodolo}}
+\end{figure}
+
+\subsubsection{Összehasonlítók}
+
+Két bemenet bitenkénti összehasonlítását végzik. Egy kétbites összehasonlító logikai kapcsolása az~\ref{fig:osszehasonlito}. ábrán látható.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=8cm]{osszehasonlito}
+	\caption{2-bites összehasonlító.\label{fig:osszehasonlito}}
+\end{figure}
+
+\subsection{Programozható logikai tömb (PLA). Aritmetikai áramkörök. Összeadók. Aritmetikai-logikai egység. Órák.}
+
+\subsubsection{Programozható logikai tömb (PLA)}
+
+Nagyon általános lap. Példánkon (\ref{fig:pla}. ábra) egy 12-bemenetes PLA látható, ennek valójában 24 bemenete van, mert a lapka mindegyiket negálja is. A bemenetek 50, egyenként 24-bemenetű \textsc{and}-kapuba vannak kötve egy-egy olvadóbiztosítékon keresztül. Az \textsc{and}-kapuk kimenetei ezután -- szintén biztosítékokon át -- \textsc{or}-kapukba futnak be. Programozáskor a kiválasztott bitosítékok kiégethetők, így nagyon sokféle logikai függvény megvalósítható.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=8cm]{pla}
+	\caption{12-bemenetes, 6-kimenetes programozható logikai tömb.\label{fig:pla}}
+\end{figure}
+
+\subsubsection{Aritmetikai áramkörök. Összeadók.}
+
+\paragraph{Léptető} Egy 8-bites szám bináris számjegyeit tolja bitenként jobbra vagy balra. 8 bemenete ($D_0, D_1, \dots$), 8 kimenete ($S_1, S_2, \dots$) és egy vezérlőjele ($C$) van. Utóbbi 1 értéke esetén jobbra, 0 értékénél balra tolódnak a számjegyek. Ld.~\ref{fig:lepteto}. ábra.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=8cm]{lepteto}
+	\caption{8-bites léptető.\label{fig:lepteto}}
+\end{figure}
+
+\paragraph{Félösszeadó} Két egybites számot tud összeadni, kimenete az eredmény és az átvitel. Átvitelbemenete nincs, ezért nem lehet összekapcsolni más félösszeadókkal. Ld.~\ref{fig:felosszeado}. ábra.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=8cm]{felosszeado}
+	\caption{Egybites egészek összeadásának igazságtáblája. Félösszeadó.\label{fig:felosszeado}}
+\end{figure}
+
+\paragraph{Teljes összeadó} Két félösszeadóból épül fel. Az összeg akkor $1$, ha az A, B és átvitel bemeneteken páratlan az $1$-esek száma. Az átvitelkimenet $1$, ha A és B is $1$, vagy pontosan egyikük $1$, és az átvitelbemenet is $1$.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=10cm]{teljesosszeado}
+	\caption{Teljes összeadó igazságtáblája és kapcsolása.\label{fig:teljesosszeado}}
+\end{figure}
+
+\paragraph{Összetett összeadó} 16-bites szó összeadásához elég 16 teljes összeadót összekapcsolnunk: az átvitelkimeneteket a bal oldali szomszéd átvitelbemenetére kötjük. Így az átvitel végighalad az elemi összeadókon, legrosszabb eset az $111\dots111+1$ összeg kiszámítása. Az eredményt csak bizonyos késleltetés után kapjuk meg. Vannak olyan összeadók, amelyeknél nincs ilyen késleltetés.
+
+32-bites összeadó működését úgy gyorsíthatjuk, hogy 3 16-bitessel helyettesítjük. Az alsó helyiértékeket $A_1$ adja össze, a felsőket pedig vele párhuzamosan $A_2$ és $A_3$, egyikük úgy, mintha lett volna átvitel, másikuk úgy, mintha nem. $A_2$ és $A_3$ értéke közül $A_1$ átvitelkimenete választja ki az érvényeset. Az ilyet \emph{átvitelkiválasztó összeadónak} nevezzük.
+
+\subsubsection{Aritmetikai-logikai egység}
+
+Olyan áramkör, amely \textsc{és} és \textsc{vagy} műveleteket hajt végre, és két gépi szót összead. $n$-bites szavak esetén $n$ azonos áramkört tartalmaz.
+
+\paragraph{1-bites ALU} Kétbites dekódere $F_0$ és $F_1$ vezérlőjeleivel kiválaszthatjuk a kívánt műveletet: $A \land B$, $A \lor B$, $\lnot B$, vagy $A+B$. Az A és B bemenő jeleket az ENA és ENB vezérlőjelekkel engedélyezhetjük. Bemenet még A negáltja és az átvitel, kimenet a művelet eredménye és az átvitel. Ld.~\ref{fig:1bitalu}. ábra.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=10cm]{1bitalu}
+	\caption{1-bites aritmetikai-logikai egység.\label{fig:1bitalu}}
+\end{figure}
+
+\paragraph{8-bites ALU} Bitszelet-áramkörökből (1-bites ALU-kból) lehet felépíteni (az invertáló jelek nincsenek feltüntetve). INC bemenete az eredményt eggyel növeli. Ld.~\ref{fig:1bitalu}. ábra.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=10cm]{8bitalu}
+	\caption{8-bites aritmetikai-logikai egység.\label{fig:8bitalu}}
+\end{figure}
+
+Sok digitális áramkörben kritikus az események sorrendje. Egyes eseményeknek egymás után, másoknak párhuzamosan kell bekövetkeznie. Sok digitális áramkör órát használ a szinkronizációra. Itt az \emph{óra} olyan áramkört jelent, amely impulzusok sorozatát bocsátja ki állandó, pontos impulzusszélességgel és -közzel. Két szomszédos impulzus közötti idő a \emph{ciklusidő}. Ld.~\ref{fig:ora}. ábra.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=8cm]{ora}
+	\caption{(a) Óra (b) idődiagramja. (c) Aszimmetrikus órajelgenerálás.\label{fig:ora}}
+\end{figure}
+
+Finomabb felbontás elérése érdekében az órajelet gyakran ``megcsapolják'', és késleltető áramkörrel eltolják, így \emph{másodlagos órajelet} létrehozva. Így egy ciklus alatt négy időbeli referenciapontot kapunk: $C_1$ és $C_2$ fel- és lefutó éleit. Egyes áramkörökben elég, ha az események csak adott időintervallumon belül történnek meg, pl. amikor $C_1$ magas, nem kell pontosan a felfutó élhez időzíteni. Az órák általában \emph{szimmetrikusak}: ugyanannyi időt töltenek magas és alacsony állapotban egy cikluson belül. Aszimmetrikus órajel előállításához egy szimmetrikus jel és fáziseltolt változata \textsc{és}-kapcsolatát képezzük.
 
 \end{document}
