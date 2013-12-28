@@ -1,4 +1,5 @@
-\documentclass[a4paper]{article}
+%\documentclass[a4paper]{article}
+\documentclass[10pt]{article}
 
 \usepackage{t1enc}
 \usepackage[magyar]{babel}
@@ -8,7 +9,10 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{amsmath}
-
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}
+\newcommand{\subsectionbreak}{\clearpage}
+\frenchspacing
 \newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
 
@@ -742,5 +746,120 @@ Sok digitális áramkörben kritikus az események sorrendje. Egyes eseményekne
 \end{figure}
 
 Finomabb felbontás elérése érdekében az órajelet gyakran ``megcsapolják'', és késleltető áramkörrel eltolják, így \emph{másodlagos órajelet} létrehozva. Így egy ciklus alatt négy időbeli referenciapontot kapunk: $C_1$ és $C_2$ fel- és lefutó éleit. Egyes áramkörökben elég, ha az események csak adott időintervallumon belül történnek meg, pl. amikor $C_1$ magas, nem kell pontosan a felfutó élhez időzíteni. Az órák általában \emph{szimmetrikusak}: ugyanannyi időt töltenek magas és alacsony állapotban egy cikluson belül. Aszimmetrikus órajel előállításához egy szimmetrikus jel és fáziseltolt változata \textsc{és}-kapcsolatát képezzük.
+
+\subsection{Memória. Tárolók, időzített SR-tároló, flip-flopok, D-flip-flop. Regiszterek. Memóriaszervezés, memórialapkák, RAM-ok és ROM-ok.}
+
+\subsubsection{Memória}
+
+A számítógép lényeges eleme, feladata a végrehajtandó utasítások és adatok tárolása.
+
+\subsubsection{Tárolók, időzített SR-tároló, flip-flopok, D-flip-flop}
+
+\paragraph{Tárolók}
+
+Egybites memória létrehozásához olyan áramkörre van szükségünk, amely valahogy ``emlékszik'' a korábbi bemeneti értékekre. Ilyen áramkört két \textsc{nor}-kapuból (ld.~\ref{fig:tarolo}. ábra) vagy \textsc{nand}-kapukból építhetünk. Ezt \emph{SR}-tárolónak nevezzük bemenetei alapján: az $S$ beállítja (Set), az $R$ visszaállítja/törli (Reset) a tárolt értéket. Két kimenete, $Q$ és $\bar{Q}$ egymás komplementere.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/tarolo}
+	\caption{(a) \textsc{nor}-tároló $0$ és (b) $1$ állapotban. (c) A \textsc{nor}-művelet igazságtáblája.\label{fig:tarolo}}
+\end{figure}
+
+Itt a kombinációs áramköröktől eltérően a kimenet nem csupán a bemenetek függvénye, hanem a \emph{kimeneteké} is, melyeket visszavezetünk a \textsc{nor}-kapuk bemeneteire. A tároló állapota nem stabil, ha mindkét bemenet $1$.
+
+\paragraph{Időzített SR-tároló}
+
+Gyakran kényelmes, ha a tároló állapota csak bizonyos, meghatározott időintervallumokban változhat meg. Ezt úgy érjük el, hogy az alapáramkörhöz a~\ref{fig:idozitettsrtarolo}. ábrán látható módon két \textsc{and}-kaput adunk. Így ha az órajel értéke $0$, az érvényteleníti az $S$ és $R$ bemenetek esetleges $1$ értékét.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/idozitettsrtarolo}
+	\caption{Időzített SR-tároló.\label{fig:idozitettsrtarolo}}
+\end{figure}
+
+\paragraph{Időzített D-tároló}
+
+Az $S=R=1$ eset által okozott bizonytalanság kiküszöbölésére jött létre. Egyetlen, $D$ bemenete van. Az órajel $1$ értéke esetén $D$ értéke kerül a memóriába. A tárolt érték folyamatosan elérhető a $Q$ kimeneten.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/dtarolo}
+	\caption{Időzített D-tároló.\label{fig:dtarolo}}
+\end{figure}
+
+\paragraph{Flip-flopok, D-flip-flop}
+
+Adott időpillanatban mintát vesznek egy jel értékéből, és tárolják azt. Az állapotváltozás nem az óra $1$ értékénél történik, hanem a $0 \rightarrow 1$ és $1 \rightarrow 0$ átmeneteknél. Ez megoldható például egy \emph{impulzusgenerátorral} (ld.~\ref{fig:impulzusgenerator}. ábra), amely rövid $1$ jelet ad ki az órajel éleinél. Ha ezt egy D-tárolóra kötjük, \emph{D-flip-flopot} kapunk.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/impulzusgenerator}
+	\caption{(a) Impulzusgenerátor. (b) Időzítés az áramkör négy pontján.\label{fig:impulzusgenerator}}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/dflipflop}
+	\caption{D-flip-flop.\label{fig:dflipflop}}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{img/flipflopszimbolumok}
+	\caption{Áramköri szimbólumok. (a) $1$, (b) $0$ órajelre váltó tároló. (c) Emelkedő, (d) eső élnél váltó flip-flop.\label{fig:flipflopszimbolumok}}
+\end{figure}
+
+\subsubsection{Regiszterek}
+
+A regiszterek összekapcsolt, egységként működő flip-flopok. A~\ref{fig:regiszter}. ábrán egy 8-bites regiszter látható, ez lefutó élnél váltó flip-flopokból áll. Óra- és törlőjelük közös. A bemeneti órajelet invertálják, az inverter tulajdonképpen a gyenge bemenet erősítésére szolgál. A kétszeres invertálás eredménye, hogy a regiszter valójában a bemeneti órajel felfutó élénél vált. Két ilyen lapkát párhuzamosan összekapcsolva 16-bites regisztert építhetünk.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/regiszter}
+	\caption{Regiszter.\label{fig:regiszter}}
+\end{figure}
+
+\subsubsection{Memóriaszervezés, memórialapkák, RAM-ok és ROM-ok}
+
+\paragraph{Memóriaszervezés}
+
+\Aref{fig:memoriaszervezes}. ábrán egy 4 darab 3-bites szót tároló memória logikai kapcsolása látható. A két címbemenet ($A_0$, $A_1$) segítségével pontosan egy szót választhatunk ki. Három adatbemenetének ($I_1$, $I_2$, $I_3$) értéke akkor íródik a kiválasztott szóba, ha az $RD$ (Read) bemenet értéke $0$. $RD=1$ esetén olvasás történik, vagyis a kiválasztott szó bitjei az adatkimenetekre kerülnek. Ha több ilyen lapkát összekötünk, az aktuális lapka a $CS=1$ (Chip Select) jellel választható ki, $CS=0$ esetén kimenetén nincs jel ($0V$). Mivel a kimenetek és a bemenetek valójában egyetlen közös sín vezetékei, fontos, hogy írásnál a kimeneti jelek ne kerüljenek a sínre. Ezt az $OE=0$ (Output Enable) jellel tilthatjuk le. A kimenetek előtti háromszög alakú szimbólumok \emph{neminvertáló pufferek}, melyek $1$ vezérlőbemenet esetén adatbemenetük és -kimenetük között rövidzárként, $0$-nál pedig szakadásként viselkednek.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/memoriaszervezes}
+	\caption{Hárombites szócímzésű memória logikai kapcsolása.\label{fig:memoriaszervezes}}
+\end{figure}
+
+\paragraph{Memórialapkák}
+
+\Aref{fig:memorialapkak}. ábrán két különböző szervezésű, de ugyanakkora kapacitású memórialapkát láthatunk. A $\overline{CS}$, $\overline{WE}$ és $\overline{OE}$ vezérlőbemenetek feletti vonal azt jelenti, hogy a jeleket negálni kell, mielőtt a chipre kötjük őket. Az (a) egy 19-bites címeket használó, 8-bites szavakat tartalmazó lapka, a (b) viszont ún. \emph{mátrixcímzésű} chip, mely egy $2048\times2048$ bites táblázatban tárolja a 4 megabitet. $\overline{RAS}=1$ esetén a címbemenetek a sor-, $\overline{CAS}=1$ esetén az oszlopcímet tartalmazzák, az így kiválasztott bit értéke pedig a $D$ kimenetre kerül. Az írás $\overline{WE}=1$ esetén szintén a $D$-n keresztül történik.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/memorialapkak}
+	\caption{Kétféle szervezésű 4 megabites memórialapka.\label{fig:memorialapkak}}
+\end{figure}
+
+\paragraph{RAM-ok és ROM-ok}
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/memoriatipusok}
+	\caption{Memóriatípusok összehasonlítása.\label{fig:memoriatipusok}}
+\end{figure}
+
+\section{Előadás}
+
+\subsection{CPU lapkák: cím-, adat- és vezérlőlábak. Sínek: sínprotokoll, aktív/passzív berendezések, sínszélesség.}
+
+\subsubsection{CPU lapkák: cím-, adat- és vezérlőlábak}
+% \subsubsection{Sínek: sínprotokoll, aktív/passzív berendezések, sínszélesség}
+
+% \subsection{Sínek időzítése. Sínütemezés. Sínműveletek.}
+
+% \subsubsection{Sínek időzítése}
+% \subsubsection{Sínütemezés}
+% \subsubsection{Sínműveletek}
 
 \end{document}
